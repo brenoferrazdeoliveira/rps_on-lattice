@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#PBS -S /bin/bash
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=100:00:00
+#PBS -N nome-1
+
+PBS_JOBNR=$( echo $PBS_JOBID | cut -d. -f1 )
+WRKDIR=$SCRATCH/$PBS_JOBNR
+
+qstat -an -u $USER
+cat $PBS_NODEFILE
+
+mkdir -p $WRKDIR
+ln -s $PBS_O_WORKDIR/* $WRKDIR/
+cd $WRKDIR
+
+./rps.out 1
+
+rm -rf $WRKDIR
